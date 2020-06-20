@@ -1,11 +1,7 @@
-## TODO: softEndingWords = softEndingFeminine.union(softEndingMasculine)
-#### softEndingFeminine
-###     noEndingYat = nouns_in_te + verbse-te
-###     Exclusion words as set of tuples
 import re
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
-from .process_vocabs import softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe
+from .process_vocabs import softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe
 
 class Converter():
 
@@ -19,15 +15,10 @@ class Converter():
     yatPrefixes = {'пре', 'две', 'ня'}
     feminineTheEndings = {'тта', 'щта'}
     exclusionWords = {('въстава', 'възстава'), ('въстан', 'възстан'), ('нишк', 'нищк'), ('нужни', 'нуждни'), ('овошк', 'овощк'), ('празник', 'праздник'), ('празнич', 'празднич'), ('сърц', 'сърдц'), ('сърчи', 'сърдчи')}
-    softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe = softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe
+    softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe = softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe
 
-    def __init__(self, text):
-
-        self.text = text
-        # tokenize by on both sentence and word level
-        self.tokenized = [word_tokenize(s) for s in sent_tokenize(text)]
-        # flatten sentences
-        self.words = [w.lower() for s in self.tokenized for w in s ]
+    def __init__(self):
+        pass
 
     def __replaceKeepCase(self, word, replacement, text):
         '''
@@ -63,149 +54,153 @@ class Converter():
         return vowel
 
 
-    def checkEnding(self, i):
+    def checkEnding(self, i, words, currentWord):
         '''
         Place yer vowels at the end of words ending in consonants
         '''
-        if self.currentWord[-1] in self.cons:
-            if self.currentWord in self.abbreviations:
+        if currentWord[-1] in self.cons:
+            if currentWord in self.abbreviations:
                 return
 
-            if self.currentWord in self.expandedVS:
-                self.words[i] = self.words[i][:1] + 'ъ'
+            if currentWord in self.expandedVS:
+                words[i] = words[i][:1] + 'ъ'
                 return
 
-            if self.currentWord in self.softEndingWords:
-                self.words[i] += 'ь'
+            if currentWord in self.softEndingWords:
+                words[i] += 'ь'
                 return
 
-            if self.currentWord[-2:] == 'ят' and self.currentWord[:-2] in self.softEndingMasculine:
-                self.words[i] = self.words[i][:-2] + 'ьт'
+            if currentWord[-2:] == 'ят' and currentWord[:-2] in self.softEndingMasculine:
+                words[i] = words[i][:-2] + 'ьт'
                 return
 
-            self.words[i] = self.words[i] + 'ъ'
+            words[i] = words[i] + 'ъ'
 
 
-    def checkUs(self, i):
+    def checkUs(self, i, words, currentWord):
         '''
         Place (big) yus vowels in their ethymological places
         '''
 
-        if self.currentWord == 'са':
-            self.words[i] = 'сѫ'
+        if currentWord == 'са':
+            words[i] = 'сѫ'
             return
 
-        if any(x in self.currentWord for x in self.usExcl):
+        if 'ъ' not in currentWord: return
+        if any(x in currentWord for x in self.usExcl):
             return
 
-        if self.currentWord in self.usHomographs:
-            self.words[i] = self.words[i].replace('ъ', 'ѫ', 1)
+        if currentWord in self.usHomographs:
+            words[i] = words[i].replace('ъ', 'ѫ', 1)
             return
 
-        for root, hasRoot in ((x, x in self.currentWord) for x in self.usRoots):
+        for root, hasRoot in ((x, x in currentWord) for x in self.usRoots):
             if hasRoot:
 
-                usIndex = self.currentWord.index(root)
+                usIndex = currentWord.index(root)
 
                 if root in self.usSecondVowel: usIndex=+2
 
-                if root in self.usHomographs and self.currentWord.endswith(root): return
+                if root in self.usHomographs and currentWord.endswith(root): return
 
-                self.words[i] = self.words[i][:usIndex] + self.words[i][usIndex:].replace('ъ', 'ѫ', 1)
+                words[i] = words[i][:usIndex] + words[i][usIndex:].replace('ъ', 'ѫ', 1)
 
-                return
+                # return
 
-    def checkYat(self, i):
+    def checkYat(self, i, words, currentWord):
         '''
         Place yat vowels in their ethymological places
         '''
 
-        if self.currentWord in self.yatFullExclusions: return
+        if 'е' not in currentWord and 'я' not in currentWord: return
+        if currentWord in self.yatFullExclusions: return
 
 
-        if self.currentWord[-2:] == 'те' and self.currentWord not in self.yatNotTe:
-            self.words[i] = self.words[i][:-1] + 'ѣ'
+        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe:
+            words[i] = words[i][:-1] + 'ѣ'
 
-        if self.currentWord in self.yatFullWords:
-            vowel = self.__getYatVowel(self.currentWord)
-            self.words[i] = self.words[i].replace(vowel, 'ѣ', 1)
+        if currentWord in self.yatFullWords:
+            vowel = self.__getYatVowel(currentWord)
+            words[i] = words[i].replace(vowel, 'ѣ', 1)
             return
 
-        for root, hasRoot in ((x, self.currentWord.startswith(x)) for x in self.yatPrefixes):
+        for root, hasRoot in ((x, currentWord.startswith(x)) for x in self.yatPrefixes):
             if hasRoot:
                 vowel = self.__getYatVowel(root)
-                self.words[i] = self.words[i].replace(vowel, 'ѣ', 1)
+                words[i] = words[i].replace(vowel, 'ѣ', 1)
 
-        for root, hasRoot in ((x, x in self.currentWord) for x in self.yatDoubleRoots):
+        for root, hasRoot in ((x, x in currentWord) for x in self.yatDoubleRoots):
             if hasRoot:
 
-                yatIndex = self.currentWord.index(root)
+                yatIndex = currentWord.index(root)
                 vowel_first = self.__getYatVowel(root)
                 vowel_second = self.__getYatVowel(root.replace(vowel_first, 'X', 1))
 
-                self.words[i] = self.words[i][:yatIndex] + self.words[i][yatIndex:].replace(vowel_first, 'ѣ', 1).replace(vowel_second, 'ѣ', 1)
+                words[i] = words[i][:yatIndex] + words[i][yatIndex:].replace(vowel_first, 'ѣ', 1).replace(vowel_second, 'ѣ', 1)
                 return
 
 
-        if any(x in self.currentWord for x in self.yatExcl):
+        if any(x in currentWord for x in self.yatExcl):
             return
 
-        for root, hasRoot in ((x, x in self.currentWord) for x in self.yatRoots):
+        for root, hasRoot in ((x, x in currentWord) for x in self.yatRoots):
             if hasRoot:
 
-                yatIndex = self.currentWord.index(root)
+                yatIndex = currentWord.index(root)
                 vowel = self.__getYatVowel(root)
-                self.words[i] = self.words[i][:yatIndex] + self.words[i][yatIndex:].replace(vowel, 'ѣ', 1)
+                words[i] = words[i][:yatIndex] + words[i][yatIndex:].replace(vowel, 'ѣ', 1)
                 return
 
 
-    def checkFeminineThe(self, i):
+    def checkFeminineThe(self, i, words, currentWord):
         '''
         Place correct ending of feminine words
         '''
-        if any(self.currentWord.endswith(x) for x in self.feminineTheEndings):
-            self.words[i] = self.words[i][:-2] + 'ь' + self.words[i][-2:]
+        if any(currentWord.endswith(x) for x in self.feminineTheEndings):
+            words[i] = words[i][:-2] + 'ь' + words[i][-2:]
             return
 
-        if self.currentWord.endswith('та') and self.currentWord[:-2] in self.softEndingFeminine:
-            self.words[i] = self.words[i][:-2] + 'ьта'
+        if currentWord.endswith('та') and currentWord[:-2] in self.softEndingFeminine:
+            words[i] = words[i][:-2] + 'ьта'
 
 
-    def checkExclusionWords(self, i):
+    def checkExclusionWords(self, i, words, currentWord):
         '''
         Change spelling of some words, that had a different spelling
         '''
-        for root, hasRoot in ((x, x[0] in self.currentWord) for x in self.exclusionWords):
+        for root, hasRoot in ((x, x[0] in currentWord) for x in self.exclusionWords):
             if hasRoot:
-                self.words[i] = self.words[i].replace(root[0], root[1], 1)
+                words[i] = words[i].replace(root[0], root[1], 1)
                 return
 
 
 
-    def convertWords(self):
+    def convertText(self, text):
+        '''
+        Convert the words in the text
+        '''
 
-        # idx for self.words list
-        i = 0
+        # tokenize by on both sentence and word level
+        tokenized = (word_tokenize(s) for s in sent_tokenize(text))
 
         # idx for the text
         text_idx = 0
 
-        for idx_sentence, s in enumerate(self.tokenized):
-            for idx_word, w in enumerate(s):
+        for idx_sentence, s in enumerate(tokenized):
+            words = list(map(lambda x: x.lower(), s))
+            for i, w in enumerate(s):
 
-                self.currentWord = self.words[i]
-                self.checkEnding(i)
-                self.checkUs(i)
-                self.checkYat(i)
-                self.checkFeminineThe(i)
-                self.checkExclusionWords(i)
+                currentWord = words[i]
+                self.checkEnding(i, words, currentWord)
+                self.checkUs(i, words, currentWord)
+                self.checkYat(i, words, currentWord)
+                self.checkFeminineThe(i, words, currentWord)
+                self.checkExclusionWords(i, words, currentWord)
 
-                tmp_index = text_idx + self.text[text_idx:].index(w)
+                tmp_index = text_idx + text[text_idx:].index(w)
 
-                self.text = self.text[:text_idx] + self.__replaceKeepCase(w, self.words[i], self.text[text_idx:])
+                text = text[:text_idx] + self.__replaceKeepCase(w, words[i], text[text_idx:])
 
-                text_idx = tmp_index + len(self.words[i])
+                text_idx = tmp_index + len(words[i])
 
-                # print(f'{w}: {self.words[i]}')
-
-                i+=1
+        return text

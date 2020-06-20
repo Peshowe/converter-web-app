@@ -1,0 +1,26 @@
+{% extends "converter/parent.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<div id='parent_div_1'>
+    <form action="{% url 'convert_text' %}" method="post" id="converter_form">
+      {% csrf_token %}
+    <div class='child_div_1'>
+
+      <textarea type="text" name="input_text" form="converter_form"  style="height:50px" placeholder="Вашият текст тук" required> </textarea>
+    </div>
+
+    <div class='child_div_2'>
+      <textarea>
+      Конвертиранъ
+      </textarea>
+    </div>
+
+    <input type="submit" value="Конвертирай" >
+    </form>
+</div>
+{% endblock %}

@@ -116,7 +116,11 @@ class Converter():
         if currentWord in self.yatFullExclusions: return
 
 
-        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe:
+        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe and currentWord not in self.verbsHomonymsTe: # the last check is temporary until POS is integrated
+            if currentWord in self.verbsHomonymsTe:
+                #POS inference goes here
+                pass
+
             words[i] = words[i][:-1] + 'ѣ'
 
         if currentWord in self.yatFullWords:

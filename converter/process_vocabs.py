@@ -8,7 +8,7 @@ STATIC_DIR = Path(STATIC_DIR)
 
 nouns_in_te = pd.read_csv(Path(f'{STATIC_DIR}/word_lists/nouns_in_te.txt'), sep='\n', header=None)[0].values
 verbs_te = pd.read_csv(Path(f'{STATIC_DIR}/word_lists/verbs-te.txt'), sep='\n', header=None)[0].values
-verbs_homonyms = pd.read_csv('word_lists/verbs_only_homonyms.txt', sep='\n', header=None)
+verbs_homonyms = pd.read_csv(f'{STATIC_DIR}/word_lists/verbs_only_homonyms.txt', sep='\n', header=None)
 softEndingMasculine = set(pd.read_csv(Path(f'{STATIC_DIR}/word_lists/masculine_soft_ending.txt'), sep='\n', header=None)[0].values)
 softEndingFeminine = set(pd.read_csv(Path(f'{STATIC_DIR}/word_lists/feminine_soft_ending.txt'), sep='\n', header=None)[0].values)
 yatRoots = set(pd.read_csv(f'{STATIC_DIR}/word_lists/yatRoots.txt', sep='\n', header=None)[0].values)

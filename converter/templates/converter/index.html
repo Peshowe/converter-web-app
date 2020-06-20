@@ -4,23 +4,26 @@
 
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
-<div id='parent_div_1'>
-    <form action="{% url 'convert_text' %}" method="post" id="converter_form">
-      {% csrf_token %}
-    <div class='child_div_1'>
+  <form action="{% url 'index' %}" method="post" id="converter_form">
+    {% csrf_token %}
+    <div id='parent_div_1' class="input-group">
 
-      <textarea type="text" name="input_text" form="converter_form"  style="height:50px" placeholder="Вашият текст тук" required> </textarea>
+      <textarea  type="text" id="input_text" name="input_text" form="converter_form" placeholder="Вашият текст тук" class="form-control" rows="10"></textarea>
+
+      <span class="input-group-addon">-</span>
+
+      <textarea  id='convertedContainer' type="text" class="form-control" rows="10" disabled></textarea>
+
     </div>
 
-    <div class='child_div_2'>
-      <textarea>
-      Конвертиранъ
-      </textarea>
-    </div>
+    <!-- <input type="submit" value="Конвертирай" > -->
+    <button type="button" onclick="convert()">Конвертирай</button>
+  </form>
 
-    <input type="submit" value="Конвертирай" >
-    </form>
-</div>
+<script src="{% static 'converter/converter_client.js' %}"></script>
+<script type="text/javascript">
+  set_crsf("{{csrf_token}}")
+</script>
+
 {% endblock %}

@@ -2,6 +2,8 @@ import re
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 from .process_vocabs import softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe
+import nltk
+nltk.download('punkt')
 
 class Converter():
 

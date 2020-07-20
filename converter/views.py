@@ -17,6 +17,5 @@ def convert_text(request):
         text=request.POST.get('input_text')
         converted_text = converter.convertText(text)
         data['text'] = converted_text
-        print(text)
-
+        
     return JsonResponse(data)

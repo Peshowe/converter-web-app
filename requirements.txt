@@ -1,0 +1,5 @@
+Django
+gunicorn
+pandas
+nltk
+WhiteNoise

@@ -10,6 +10,8 @@ from .pos_tagger import tag_pos
 class Converter():
 
     cons = {"б", "в", "г", "д", "ж", "з", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ"}
+    vowels = {"а", "ъ", "о", "у", "е", "и", "ѣ", "ѫ"}
+    no_succeeding_yat = vowels.union({"ч", "ш", "ж"}) # letters after which we can't have a yat vowel
     expandedVS = {'във', 'със'}
     usHomographs = {'кът', 'път', 'прът'}
     usSecondVowel = {'гълъб', 'жълъд'}
@@ -17,6 +19,7 @@ class Converter():
     yatFullWords = {'ляв', 'лява', 'лявата', 'бях', 'бяха', 'бяхме','вежда', 'вежди', 'веждата', 'веждите', 'де', 'бе'}
     yatDoubleRoots = {'бележ', 'белез', 'белег', 'белех', 'белел', 'беляз', 'белял', 'белях', 'предмет'}
     yatPrefixes = {'пре', 'две', 'ня'}
+    yatSuffixes = {'еше', 'еха'}
     feminineTheEndings = {'тта', 'щта'}
     exclusionWords = {('въстава', 'възстава'), ('въстан', 'възстан'), ('нишк', 'нищк'), ('нужни', 'нуждни'), ('овошк', 'овощк'), ('празник', 'праздник'), ('празнич', 'празднич'), ('сърц', 'сърдц'), ('сърчи', 'сърдчи')}
     softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe = softEndingMasculine, softEndingFeminine, softEndingWords, yatRoots, yatExcl, usRoots, usExcl, abbreviations, yatNotTe, verbsHomonymsTe
@@ -120,7 +123,7 @@ class Converter():
         if currentWord in self.yatFullExclusions: return
 
 
-        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe: # the last check is temporary until POS is integrated
+        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe:
             addYat = True
             if currentWord in self.verbsHomonymsTe:
                 #POS inference
@@ -135,6 +138,9 @@ class Converter():
             vowel = self.__getYatVowel(currentWord)
             words[i] = words[i].replace(vowel, 'ѣ', 1)
             return
+
+        if currentWord[-3:] in ['еха', 'еше'] and currentWord[-4] not in self.no_succeeding_yat:
+            words[i] = words[i][:-3] + 'ѣ' + words[i][-2:]
 
         for root, hasRoot in ((x, currentWord.startswith(x)) for x in self.yatPrefixes):
             if hasRoot:

@@ -5,6 +5,8 @@ from .process_vocabs import softEndingMasculine, softEndingFeminine, softEndingW
 import nltk
 nltk.download('punkt')
 
+from .pos_tagger import tag_pos
+
 class Converter():
 
     cons = {"б", "в", "г", "д", "ж", "з", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х", "ц", "ч", "ш", "щ"}
@@ -109,7 +111,7 @@ class Converter():
 
                 # return
 
-    def checkYat(self, i, words, currentWord):
+    def checkYat(self, i, words, currentWord, origSentence):
         '''
         Place yat vowels in their ethymological places
         '''
@@ -118,12 +120,16 @@ class Converter():
         if currentWord in self.yatFullExclusions: return
 
 
-        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe and currentWord not in self.verbsHomonymsTe: # the last check is temporary until POS is integrated
+        if currentWord[-2:] == 'те' and currentWord not in self.yatNotTe: # the last check is temporary until POS is integrated
+            addYat = True
             if currentWord in self.verbsHomonymsTe:
-                #POS inference goes here
-                pass
+                #POS inference
+                tagged_words = tag_pos(origSentence)
+                # don't add yat to the end of the word if it's a verb
+                addYat = not tagged_words[i][1] == 'VERB'
 
-            words[i] = words[i][:-1] + 'ѣ'
+            if addYat:
+                words[i] = words[i][:-1] + 'ѣ'
 
         if currentWord in self.yatFullWords:
             vowel = self.__getYatVowel(currentWord)
@@ -199,7 +205,7 @@ class Converter():
                 currentWord = words[i]
                 self.checkEnding(i, words, currentWord)
                 self.checkUs(i, words, currentWord)
-                self.checkYat(i, words, currentWord)
+                self.checkYat(i, words, currentWord, s)
                 self.checkFeminineThe(i, words, currentWord)
                 self.checkExclusionWords(i, words, currentWord)
 

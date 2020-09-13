@@ -277,7 +277,9 @@ def tag_pos(sentence_tokenized):
         (input_ids, input_masks, segment_ids, _
         ) = convert_examples_to_features(tokenizer, test_example, max_seq_length=MAX_SEQUENCE_LENGTH+2)
 
-        predictions = model.predict([input_ids, input_masks, segment_ids], batch_size=1).argmax(-1)[0]
+        with sess.as_default():
+            with sess.graph.as_default():
+                predictions = model.predict([input_ids, input_masks, segment_ids], batch_size=1).argmax(-1)[0]
 
         pred_tuples += [(sentence_ini[i-1], int2tag[pred]) for i, pred in enumerate(predictions) if not i>len(sentence_ini) and pred!=0]
 
@@ -290,6 +292,7 @@ MAX_SEQUENCE_LENGTH = 70
 tf_config = tf.ConfigProto(allow_soft_placement=True)
 tf_config.gpu_options.allow_growth = True
 sess = tf.Session(config=tf_config)
+initialize_vars(sess)
 
 tags = { 'ADJ',
          'ADP',
@@ -322,6 +325,8 @@ int2tag[0] = '-PAD-'
 
 n_tags = len(tag2int)
 
+# graph = tf.get_default_graph()
+
 # Params for bert model and tokenization
 bert_path = "https://tfhub.dev/google/bert_multi_cased_L-12_H-768_A-12/1" #use multi lang version!
 
@@ -330,3 +335,4 @@ tokenizer = create_tokenizer_from_hub_module(bert_path)
 
 model = build_model(MAX_SEQUENCE_LENGTH+2) # We sum 2 for [CLS], [SEP] tokens
 model.load_weights("converter/static/converter/bert_model/bert_last_epoch.h5")
+model._make_predict_function()

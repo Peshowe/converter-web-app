@@ -1,0 +1,16 @@
+#parent_div_1{
+  display: flex;
+}
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+.convert-button{
+  margin-top: 1em;
+}
+
+.about-box{
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+}

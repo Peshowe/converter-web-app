@@ -95,7 +95,7 @@ no_succeeding_yat = vowels.union(
 expandedVS = {"във", "със"}
 usHomographs = {"кът", "път", "прът"}
 usSecondVowel = {"гълъб", "жълъд"}
-yatFullExclusions = {"сте", "вещ", "лев", "лева", "свет"}
+yatFullExclusions = {"сте", "вещ", "лев", "лева", "свет", "нея"}
 yatFullWords = {
     "ляв",
     "лява",
@@ -110,6 +110,7 @@ yatFullWords = {
     "де",
     "бе",
     "дето",
+    "утре",
 }
 yatDoubleRoots = {
     "бележ",
@@ -122,7 +123,7 @@ yatDoubleRoots = {
     "белях",
     "предмет",
 }
-yatPrefixes = {"пре", "две", "ня"}
+yatPrefixes = {"пре", "две", "ня", "нався"}
 yatSuffixes = {"еше", "еха"}
 feminineTheEndings = {"тта", "щта"}
 exclusionWords = {
@@ -136,3 +137,5 @@ exclusionWords = {
     ("сърц", "сърдц"),
     ("сърчи", "сърдчи"),
 }
+
+usNotExcl = {"откъсн"}

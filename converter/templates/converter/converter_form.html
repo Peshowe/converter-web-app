@@ -1,0 +1,22 @@
+<form action="{% url 'index' %}" method="post" id="converter_form">
+    {% csrf_token %}
+    <div id='parent_div_1' class="input-group">
+
+        <textarea type="text" id="input_text" name="input_text" form="converter_form" placeholder="Вашият текст тук"
+            class="form-control" rows="15"></textarea>
+
+        <span class="input-group-addon">-</span>
+        {% load static %}
+        <img id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане" hidden>
+        <textarea id='convertedContainer' type="text" class="form-control" rows="15" disabled></textarea>
+
+    </div>
+
+    <button id="convert_button" type="button" class="btn btn-primary convert-button"
+        onclick="convert()">Конвертирай</button>
+</form>
+
+<script src="{% static 'converter/js/converter_client.js' %}"></script>
+<script type="text/javascript">
+    set_crsf("{{csrf_token}}")
+</script>

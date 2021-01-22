@@ -1,14 +1,25 @@
 <html>
+
 <head>
   {% load static %}
 
-  <link rel="stylesheet" type="text/css" href="{% static 'converter/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'converter/styles/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'converter/styles/style.css' %}">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Правописенъ конверторъ</title>
 
 
 </head>
 
-{% block content %}{% endblock %}
+<body>
+
+  {% block content %}{% endblock %}
+
+
+  <script src="{% static 'converter/js/bootstrap.min.js' %}"></script>
+
+</body>
 
 </html>

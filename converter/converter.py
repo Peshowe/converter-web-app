@@ -34,6 +34,7 @@ from .process_vocabs import (
     yatPrefixes,
     feminineTheEndings,
     exclusionWords,
+    usNotExcl,
 )
 
 
@@ -96,7 +97,7 @@ class Converter:
                 return
 
             if currentWord[-2:] == "ят" and currentWord[:-2] in softEndingMasculine:
-                words[i] = words[i][:-2] + "ьт"
+                words[i] = words[i][:-2] + "ьтъ"
                 return
 
             words[i] = words[i] + "ъ"
@@ -112,7 +113,9 @@ class Converter:
 
         if "ъ" not in currentWord:
             return
-        if any(x in currentWord for x in usExcl):
+        if any(x in currentWord for x in usExcl) and not any(
+            x in currentWord for x in usNotExcl
+        ):
             return
 
         if currentWord in usHomographs:
@@ -129,10 +132,9 @@ class Converter:
 
                 if root in usHomographs and currentWord.endswith(root):
                     return
-
                 words[i] = words[i][:usIndex] + words[i][usIndex:].replace("ъ", "ѫ", 1)
 
-                # return
+                return
 
     def _checkYat(self, i, words, currentWord, origSentence):
         """
@@ -162,7 +164,7 @@ class Converter:
 
         if (
             currentWord[-3:] in ["еха", "еше"]
-            and currentWord[-4] not in no_succeeding_yat
+            and len(currentWord)>=4 and currentWord[-4] not in no_succeeding_yat
         ):
             words[i] = words[i][:-3] + "ѣ" + words[i][-2:]
 
@@ -226,12 +228,16 @@ class Converter:
             str: Converted text output
         """
 
+        # NLTK has a weird way with quotes, so we "sanitize" the input here
+        text = re.sub(r'"', "``", text)
+
         # tokenize by on both sentence and word level
         tokenized = (word_tokenize(s) for s in sent_tokenize(text))
 
         # idx for the text
         text_idx = 0
 
+        # for each word in each sentence, run the spelling conversions
         for idx_sentence, s in enumerate(tokenized):
             words = list(map(lambda x: x.lower(), s))
             for i, w in enumerate(s):
@@ -250,5 +256,8 @@ class Converter:
                 )
 
                 text_idx = tmp_index + len(words[i])
+
+        # revert the quotes "sanitization" (potentionally if someone has used the other weird quotes, this will change them to the normal ones)
+        text = re.sub(r"``", '"', text)
 
         return text

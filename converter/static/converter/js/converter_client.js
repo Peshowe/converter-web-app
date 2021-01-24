@@ -83,10 +83,10 @@ function convert() {
 
 
 
-// a sad attempt at enabling dark mode functionality
-// function toggleDarkMode() {
-//   var element = document.body;
-//   element.classList.toggle("dark-mode");
-//   myInput.classList.toggle("dark-mode");
-//   convertedContainer.classList.toggle("dark-mode");
-// }
+// an attempt at enabling dark mode functionality
+function toggleDarkMode() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+  myInput.classList.toggle("dark-mode");
+  convertedContainer.classList.toggle("dark-mode");
+}

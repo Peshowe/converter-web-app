@@ -1,4 +1,5 @@
 .converter-form{
+  margin-top: 0.5em;
   margin-left:1em;
   margin-right:1em;
 }
@@ -32,16 +33,82 @@
   }
 }
 
-.dark-mode {
-  background-color: black;
-  color: white;
+.title-box{
+  margin-left:0.5em;
+}
+
+.title-box img {
+  float: left;
+  width: 5em;
+  height: 4em;
+  background: #555;
+}
+
+.title-box h1 {
+  position: relative;
+  top: 0.3em;
+  left: 0.4em;
 }
 
 .convert-button{
   margin-top: 1em;
+  margin-bottom: 0.4em;
 }
 
 .about-box{
   margin-top: 0.5em;
   margin-left: 0.5em;
+}
+
+@font-face {
+  font-family: myFont;
+  src: url('https://fonts.googleapis.com/css2?family=Scada&display=swap');
+}
+
+* {
+  font-family: myFont;
+  font-size: 102%;
+ }
+
+a, .nav-link{
+  color: #0f56a1;
+}
+
+.dark-mode, .dark-mode:focus, .dark-mode::selection,.dark-mode:active, .dark-mode .nav-link.active {
+  color: rgb(209, 205, 199);
+  background-color: rgb(24, 26, 27);
+  border-color: rgb(56, 61, 63) rgb(56, 61, 63) rgb(48, 52, 54);
+}
+
+.dark-mode .nav-tabs, .dark-mode .nav-link{
+  border-bottom-color: rgb(56, 61, 63);
+}
+
+.dark-mode .nav-link{
+  background-color: rgb(24, 26, 27);
+  color: rgb(209, 205, 199);
+}
+
+.dark-mode:disabled {
+  
+  background-color: rgb(35, 38, 39);
+  color: rgb(209, 205, 199);
+}
+
+
+.dark-mode button{
+  color: rgb(232, 230, 227);
+  background-color: rgb(0, 98, 204);
+  border-color: rgb(0, 86, 179);
+}
+
+.dark-mode a, .dark-mode .nav-link{
+  color: #508fd3;
+}
+
+#dark_mode_button{
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  margin-right: 1em;
+  float: right;
 }

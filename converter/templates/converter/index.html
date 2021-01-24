@@ -4,21 +4,31 @@
 
 {% load static %}
 
-<h1>Правописенъ конверторъ</h1>
+<div class="title-box">
+  <img src="{% static 'converter/logo.png' %}" alt="logo" />
+  <h1>Иванчевски правописенъ конверторъ</h1>
+</div>
+<br>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-  <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="converter-tab" data-bs-toggle="tab" href="#converter" role="tab"
-      aria-controls="converter" aria-selected="true">Конверторъ</a>
-  </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="converter-tab" data-bs-toggle="tab" href="#converter" role="tab"
+        aria-controls="converter" aria-selected="true">Конверторъ</a>
+    </li>
 
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="about-tab" data-bs-toggle="tab" href="#about" role="tab" aria-controls="about"
-      aria-selected="false">Относно</a>
-  </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="about-tab" data-bs-toggle="tab" href="#about" role="tab" aria-controls="about"
+        aria-selected="false">Относно</a>
+    </li>
 
-</ul>
+
+
+  </ul>
+  <button id="dark_mode_button" type="button" class="btn btn-primary" onclick="toggleDarkMode()">Тъменъ
+    режимъ</button>
+</div>
 
 
 <div class="tab-content" id="myTabContent">

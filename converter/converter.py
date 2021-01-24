@@ -151,8 +151,10 @@ class Converter:
             if currentWord in verbsHomonymsTe:
                 # POS inference
                 tagged_words = tag_pos(origSentence)
-                # don't add yat to the end of the word if it's a verb
-                addYat = not tagged_words[i][1] == "VERB"
+                # if the tagger is not initialised, it will return None
+                if tagged_words is not None:
+                    # don't add yat to the end of the word if it's a verb
+                    addYat = not tagged_words[i][1] == "VERB"
 
             if addYat:
                 words[i] = words[i][:-1] + "ѣ"
@@ -164,7 +166,8 @@ class Converter:
 
         if (
             currentWord[-3:] in ["еха", "еше"]
-            and len(currentWord)>=4 and currentWord[-4] not in no_succeeding_yat
+            and len(currentWord) >= 4
+            and currentWord[-4] not in no_succeeding_yat
         ):
             words[i] = words[i][:-3] + "ѣ" + words[i][-2:]
 

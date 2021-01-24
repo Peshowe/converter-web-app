@@ -1,6 +1,37 @@
-#parent_div_1{
+.converter-form{
+  margin-left:1em;
+  margin-right:1em;
+}
+
+.parent_div_1{
   display: flex;
 }
+
+.side-box{
+  width: 50%;
+}
+
+
+@media (max-width: 767px) {
+  .converter-form{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+  }
+  .side-box {
+    width: 100%;
+  }
+  .convert-button{
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .loading_gif{
+    height: 10em;
+    /* width: 18em; */
+  }
+}
+
 .dark-mode {
   background-color: black;
   color: white;

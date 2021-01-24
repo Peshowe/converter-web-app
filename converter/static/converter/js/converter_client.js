@@ -62,9 +62,13 @@ function convert() {
         //hide loading gif and show output box
         loadingGif.hidden = true;
         convertedContainer.hidden = false;
-      } else {
+      } else if (this.status >= 400) {
         //something went wrong, so put a generic hardcoded error message
-        convertedContainer.innerHTML = "Възникна грѣшка...";
+        convertedContainer.innerHTML = "Възникна грѣшка... прѣзаредѣте страницата";
+
+        //hide loading gif and show output box
+        loadingGif.hidden = true;
+        convertedContainer.hidden = false;
       }
     };
 

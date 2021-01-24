@@ -1,20 +1,27 @@
 <form action="{% url 'index' %}" method="post" id="converter_form">
     {% csrf_token %}
-    <div id='parent_div_1' class="input-group">
+    <div class="converter-form">
+        <div class="input-group parent_div_1">
 
-        <textarea type="text" id="input_text" name="input_text" form="converter_form" placeholder="Вашият текст тук"
-            class="form-control" rows="15"></textarea>
+            <div class="side-box">
+                <textarea type="text" id="input_text" name="input_text" form="converter_form"
+                    placeholder="Вашият текст тук" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
+            </div>
 
-        <span class="input-group-addon">-</span>
-        {% load static %}
-        <img id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане" hidden>
-        <textarea id='convertedContainer' type="text" class="form-control" rows="15" disabled></textarea>
+            <div class="side-box">
+                {% load static %}
+                <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
+                    hidden>
 
+                <textarea id='convertedContainer' type="text" class="form-control" rows="15" disabled></textarea>
+            </div>
+        </div>
+
+        <button id="convert_button" type="button" class="btn btn-primary convert-button"
+            onclick="convert()">Конвертирай</button>
     </div>
-
-    <button id="convert_button" type="button" class="btn btn-primary convert-button"
-        onclick="convert()">Конвертирай</button>
 </form>
+
 
 <script src="{% static 'converter/js/converter_client.js' %}"></script>
 <script type="text/javascript">

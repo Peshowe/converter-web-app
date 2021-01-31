@@ -8,6 +8,11 @@
   display: flex;
 }
 
+.parent_div_2{
+  display: flex;
+  justify-content: space-between;
+}
+
 .side-box{
   width: 50%;
 }
@@ -74,6 +79,11 @@ a, .nav-link{
   color: #0f56a1;
 }
 
+.dark-mode #convertedContainer {
+  background-color: rgb(35, 38, 39);
+  color: rgb(209, 205, 199);
+}
+
 .dark-mode, .dark-mode:focus, .dark-mode::selection,.dark-mode:active, .dark-mode .nav-link.active {
   color: rgb(209, 205, 199);
   background-color: rgb(24, 26, 27);
@@ -88,13 +98,6 @@ a, .nav-link{
   background-color: rgb(24, 26, 27);
   color: rgb(209, 205, 199);
 }
-
-.dark-mode:disabled {
-  
-  background-color: rgb(35, 38, 39);
-  color: rgb(209, 205, 199);
-}
-
 
 .dark-mode button{
   color: rgb(232, 230, 227);
@@ -111,4 +114,14 @@ a, .nav-link{
   margin-bottom: 0.4em;
   margin-right: 1em;
   float: right;
+}
+
+#easter_egg{
+  margin-left: 5em;
+  width: 50%;
+  height: auto;
+}
+
+body {
+  width:99%;
 }

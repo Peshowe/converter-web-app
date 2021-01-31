@@ -46,6 +46,10 @@ function convert() {
 
     var val = myInput.value;
 
+    if (val == "Нощта на 26-ти февруари, 1945 г.") {
+      document.getElementById("easter_egg").hidden = false;
+    }
+
     //disable the input while converting
     myInput.disabled = true;
 
@@ -79,6 +83,18 @@ function convert() {
 
     xhttp.send(encodeURIComponent('input_text') + '=' + encodeURIComponent(val));
   }
+}
+
+
+//copy the converted text to the user's clipboard
+function copyToClipboard() {
+
+  /* Select the text field */
+  convertedContainer.select();
+  convertedContainer.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
 }
 
 

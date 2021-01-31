@@ -13,14 +13,20 @@
                 <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
                     hidden>
 
-                <textarea id='convertedContainer' type="text" class="form-control" rows="15" disabled></textarea>
+                <textarea id='convertedContainer' type="text" class="form-control" rows="15" readonly></textarea>
             </div>
         </div>
 
-        <button id="convert_button" type="button" class="btn btn-primary convert-button"
-            onclick="convert()">Конвертирай</button>
+        <div class="input-group parent_div_2">
+            <button id="convert_button" type="button" class="btn btn-primary convert-button"
+                onclick="convert()">Конвертирай</button>
+            <button id="copy_button" type="button" class="btn btn-primary convert-button"
+                onclick="copyToClipboard()">Копирай</button>
+        </div>
     </div>
 </form>
+
+<img id="easter_egg" src="{% static 'converter/easter_egg.png' %}" alt="Нощьта на 26-ти февруари" hidden>
 
 
 <script src="{% static 'converter/js/converter_client.js' %}"></script>

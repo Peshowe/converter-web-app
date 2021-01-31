@@ -2,17 +2,22 @@
 POS tagger using fine-tuned BERT
 Most of the code in this module is borrowed from https://github.com/soutsios/pos-tagger-bert
 """
-
-
-# trained model weights for POS
-MODEL_WEIGHTS_DIR = "converter/static/converter/bert_model/bert_last_epoch.h5"
-
 import os
+from pathlib import Path
+
+FILE_DIR = os.path.dirname(os.path.realpath(__file__))
+STATIC_DIR = os.path.join(FILE_DIR, "static/converter")
+STATIC_DIR = Path(STATIC_DIR)
+# trained model weights for POS
+MODEL_WEIGHTS_DIR = Path(f"{STATIC_DIR}/bert_model/bert_last_epoch.h5")
 
 
 # Check if the file with the weights exists
 if not os.path.exists(MODEL_WEIGHTS_DIR):
     # if not, only expose a tag_pos function that doesn't do anything
+    print(
+        f"No model weights found at {MODEL_WEIGHTS_DIR}. Converter will not do POS tagging."
+    )
 
     def tag_pos(t):
         return None
@@ -20,6 +25,9 @@ if not os.path.exists(MODEL_WEIGHTS_DIR):
 
 else:
     # if the weigts are there, initialise the entire BERT model
+    print(
+        f"Model weights found at {MODEL_WEIGHTS_DIR}. Loading model for POS tagging..."
+    )
 
     import keras
     import numpy as np
@@ -31,7 +39,7 @@ else:
     import tensorflow_hub as hub
     from bert.tokenization import FullTokenizer
 
-    from tqdm import tqdm_notebook
+    # from tqdm import tqdm_notebook
 
     class PaddingInputExample(object):
         """Fake example so the num input examples is a multiple of the batch size.
@@ -143,7 +151,8 @@ else:
         """Convert a set of `InputExample`s to a list of `InputFeatures`."""
 
         input_ids, input_masks, segment_ids, labels = [], [], [], []
-        for example in tqdm_notebook(examples, desc="Converting examples to features"):
+        # tqdm_notebook(examples, desc="Converting examples to features"):
+        for example in examples:
             input_id, input_mask, segment_id, label = convert_single_example(
                 tokenizer, example, max_seq_length
             )

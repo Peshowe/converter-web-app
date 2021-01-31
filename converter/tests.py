@@ -23,8 +23,8 @@ class ConverterTestCase(TestCase):
 
         self.assertEqual(converted_text, expected_text)
 
-    def test_text1(self):
-        self._test("text1.txt", "conv1.txt")
+    # def test_text1(self):
+    #     self._test("text1.txt", "conv1.txt")
 
     def test_text2(self):
         self._test("text2.txt", "conv2.txt")

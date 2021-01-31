@@ -102,6 +102,13 @@ class Converter:
 
         return vowel
 
+    def __placeYatVowel(self, i, words, currentWord):
+        """Place all yat vowels from currentWord in their respective indices in words[i]"""
+        while "ѣ" in currentWord:
+            yatIndex = currentWord.index("ѣ")
+            words[i] = words[i][:yatIndex] + "ѣ" + words[i][yatIndex + 1 :]
+            currentWord = currentWord[:yatIndex] + "X" + currentWord[yatIndex + 1 :]
+
     def _checkEnding(self, i, words, currentWord):
         """
         Place yer vowels at the end of words ending in consonants
@@ -178,12 +185,13 @@ class Converter:
                     addYat = not tagged_words[i][1] == "VERB"
 
             if addYat:
-                words[i] = words[i][:-1] + "ѣ"
+                currentWord = currentWord[:-1] + "ѣ"
 
         # check if we have a direct 1 to 1 mapping for this word
         if currentWord in yatFullWords:
             vowel = self.__getYatVowel(currentWord)
-            words[i] = words[i].replace(vowel, "ѣ", 1)
+            currentWord = currentWord.replace(vowel, "ѣ", 1)
+            self.__placeYatVowel(i, words, currentWord)
             return
 
         # the following two if statemets are for verbs in past tense (окончания на глаголи в минало несвършено време)
@@ -193,7 +201,7 @@ class Converter:
             and currentWord[-4] not in no_succeeding_yat
         ):
             if len(currentWord) == 4 or currentWord[-5:-1] not in noYatVerbs:
-                words[i] = words[i][:-3] + "ѣ" + words[i][-2:]
+                currentWord = currentWord[:-3] + "ѣ" + currentWord[-2:]
 
         if (
             currentWord[-2:] in {"ех", "ях"}
@@ -202,13 +210,13 @@ class Converter:
         ):
             if len(currentWord) == 3 or currentWord[-4:] not in noYatVerbs:
                 # we have already added the "-ъ" at the end of words[i], so take that in consideration
-                words[i] = words[i][:-3] + "ѣ" + words[i][-2:]
+                currentWord = currentWord[:-2] + "ѣ" + currentWord[-1]
 
         # check if the word starts with a prefix that should have yat
         for root, hasRoot in ((x, currentWord.startswith(x)) for x in yatPrefixes):
             if hasRoot:
                 vowel = self.__getYatVowel(root)
-                words[i] = words[i].replace(vowel, "ѣ", 1)
+                currentWord = currentWord.replace(vowel, "ѣ", 1)
 
         # check if the word has a root with two yat letters in it
         for root, hasRoot in ((x, x in currentWord) for x in yatDoubleRoots):
@@ -218,13 +226,16 @@ class Converter:
                 vowel_first = self.__getYatVowel(root)
                 vowel_second = self.__getYatVowel(root.replace(vowel_first, "X", 1))
 
-                words[i] = words[i][:yatIndex] + words[i][yatIndex:].replace(
+                currentWord = currentWord[:yatIndex] + currentWord[yatIndex:].replace(
                     vowel_first, "ѣ", 1
                 ).replace(vowel_second, "ѣ", 1)
+
+                self.__placeYatVowel(i, words, currentWord)
                 return
 
         # stop here if word is in list of words that don't have yat in them
         if any(x in currentWord for x in yatExcl):
+            self.__placeYatVowel(i, words, currentWord)
             return
 
         # search for any roots that have yat in them in the word
@@ -233,10 +244,14 @@ class Converter:
 
                 yatIndex = currentWord.index(root)
                 vowel = self.__getYatVowel(root)
-                words[i] = words[i][:yatIndex] + words[i][yatIndex:].replace(
+                currentWord = currentWord[:yatIndex] + currentWord[yatIndex:].replace(
                     vowel, "ѣ", 1
                 )
+
+                self.__placeYatVowel(i, words, currentWord)
                 return
+
+        self.__placeYatVowel(i, words, currentWord)
 
     def _checkFeminineThe(self, i, words, currentWord):
         """

@@ -344,6 +344,8 @@ else:
     # Initialize session
     tf_config = tf.ConfigProto(allow_soft_placement=True)
     tf_config.gpu_options.allow_growth = True
+    # tf_config.intra_op_parallelism_threads = 2
+    # tf_config.inter_op_parallelism_threads = 2
     sess = tf.Session(config=tf_config)
     initialize_vars(sess)
 

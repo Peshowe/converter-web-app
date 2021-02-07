@@ -62,12 +62,12 @@
 
 .about-box{
   margin-top: 0.5em;
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
 
 @font-face {
   font-family: myFont;
-  src: url('https://fonts.googleapis.com/css2?family=Scada&display=swap');
+  src: url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 }
 
 * {
@@ -107,6 +107,11 @@ a, .nav-link{
 
 .dark-mode a, .dark-mode .nav-link{
   color: #508fd3;
+}
+
+.dark-mode:disabled {
+  background-color: rgb(35, 38, 39);
+  color: rgb(209, 205, 199);
 }
 
 #dark_mode_button{

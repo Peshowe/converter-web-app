@@ -263,9 +263,9 @@ else:
         return model
 
     def initialize_vars(sess):
-        sess.run(tf.local_variables_initializer())
-        sess.run(tf.global_variables_initializer())
-        sess.run(tf.tables_initializer())
+        sess.run(tf.compat.v1.local_variables_initializer())
+        sess.run(tf.compat.v1.global_variables_initializer())
+        sess.run(tf.compat.v1.tables_initializer())
         K.set_session(sess)
 
     def split(sentences, max):
@@ -342,11 +342,11 @@ else:
     MAX_SEQUENCE_LENGTH = 70
 
     # Initialize session
-    tf_config = tf.ConfigProto(allow_soft_placement=True)
+    tf_config = tf.compat.v1.ConfigProto(allow_soft_placement=True)
     tf_config.gpu_options.allow_growth = True
     # tf_config.intra_op_parallelism_threads = 2
     # tf_config.inter_op_parallelism_threads = 2
-    sess = tf.Session(config=tf_config)
+    sess = tf.compat.v1.Session(config=tf_config)
     initialize_vars(sess)
 
     tags = {

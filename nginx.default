@@ -1,8 +1,10 @@
 # nginx.default
 
 server {
-    listen 8020;
+    listen 443 ssl;
     server_name example.org;
+    ssl_certificate /opt/app/ssl/nginx-selfsigned.crt;
+    ssl_certificate_key /opt/app/ssl/nginx-selfsigned.key;
 
     location / {
         proxy_pass http://127.0.0.1:8010;

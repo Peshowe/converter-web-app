@@ -1,27 +1,22 @@
 <form action="{% url 'index' %}" method="post" id="converter_form">
     {% csrf_token %}
     <div class="converter-form">
-        <div class="input-group parent_div_1">
+        <textarea type="text" id="input_text" name="input_text" form="converter_form"
+                      placeholder="Вашият текст тук" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
+        {% load static %}
+        <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
+             hidden>
 
-            <div class="side-box">
-                <textarea type="text" id="input_text" name="input_text" form="converter_form"
-                    placeholder="Вашият текст тук" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
-            </div>
+        <textarea id='convertedContainer' type="text" class="form-control" rows="15" readonly hidden></textarea>
 
-            <div class="side-box">
-                {% load static %}
-                <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
-                    hidden>
-
-                <textarea id='convertedContainer' type="text" class="form-control" rows="15" readonly></textarea>
-            </div>
-        </div>
 
         <div class="input-group parent_div_2">
             <button id="convert_button" type="button" class="btn btn-primary convert-button"
                 onclick="convert()">Конвертирай</button>
             <button id="copy_button" type="button" class="btn btn-primary convert-button"
-                onclick="copyToClipboard()">Копирай</button>
+                onclick="copyToClipboard()" hidden>Копирай</button>
+            <button id="new_button" type="button" class="btn btn-primary convert-button"
+                    onclick="resetConvert()" hidden>Ново конвертиране</button>
         </div>
     </div>
 </form>

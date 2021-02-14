@@ -15,6 +15,8 @@
 
   <link rel="stylesheet" type="text/css" href="{% static 'converter/styles/bootstrap.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'converter/styles/style.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:400,400i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Tinos:400,400i&display=swap" rel="stylesheet">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,8 +27,9 @@
 
 <body>
 
-  {% block content %}{% endblock %}
-
+  <div class="page-wrapper">
+    {% block content %}{% endblock %}
+  </div>
 
   <script src="{% static 'converter/js/bootstrap.min.js' %}"></script>
 

@@ -6,15 +6,14 @@
 
 <div class="title-box">
   <img src="{% static 'converter/logo.png' %}" alt="logo" />
-  <h1>Иванчевски правописенъ конверторъ</h1>
+  <div class="title">
+    <h1>Български описменитель</h1>
+    <h2>Конверторъ къмъ Иванчевски правописъ.</h2>
+    <h2>Проектъ на „<a href="https://osvedomitel.bg">Български освѣдомитель</a>“.</h2>
+  </div>
 </div>
-<button id="dark_mode_button" type="button" class="btn btn-primary" onclick="toggleDarkMode()">Тъменъ
-  режимъ</button>
-<br>
 
-
-
-<div>
+<div class="navigation">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
 
     <li class="nav-item" role="presentation">
@@ -29,6 +28,12 @@
 
   </ul>
 
+  <button id="dark_mode_button" type="button" class="btn btn-primary" onclick="toggleDarkMode()">
+    Тъменъ режимъ
+  </button>
+  <button id="dark_mode_icon" type="button" class="btn btn-primary" onclick="toggleDarkMode()">
+    Тъмно
+  </button>
 </div>
 
 

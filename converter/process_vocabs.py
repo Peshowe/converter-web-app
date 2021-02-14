@@ -15,6 +15,7 @@ nouns_in_te = pd.read_csv(
 verbs_te = pd.read_csv(
     Path(f"{STATIC_DIR}/word_lists/verbs-te.txt"), sep="\n", header=None
 )[0].values
+verbs_te = set(verbs_te)
 verbs_homonyms = pd.read_csv(
     f"{STATIC_DIR}/word_lists/verbs_only_homonyms.txt", sep="\n", header=None
 )
@@ -61,7 +62,7 @@ verbsHomonymsTe = set(
 )
 
 # these ending in "-те" are always verbs
-yatNotTe = (set(nouns_in_te).union(set(verbs_te))).difference(verbsHomonymsTe)
+yatNotTe = (set(nouns_in_te).union(verbs_te)).difference(verbsHomonymsTe)
 
 softEndingWords = softEndingMasculine.union(softEndingFeminine)
 

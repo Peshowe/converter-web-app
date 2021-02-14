@@ -38,6 +38,7 @@ from .process_vocabs import (
     exclusionWords,
     usNotExcl,
     freq_df,
+    verbs_te,
 )
 
 
@@ -195,8 +196,16 @@ class Converter:
             self.__placeYatVowel(i, words, currentWord)
             return
 
-        # the following two if statemets are for verbs in past tense (окончания на глаголи в минало несвършено време)
+        # the following three if statemets are for verbs in past tense (окончания на глаголи в минало несвършено време)
         if (
+            currentWord[-4:] in {"яхме", "ехме", "яхте", "ехте"}
+            and len(currentWord) >= 5
+            and currentWord[-5] not in no_succeeding_yat
+        ):
+            if len(currentWord) == 5 or currentWord[-6:-2] not in noYatVerbs:
+                currentWord = currentWord[:-4] + "ѣ" + currentWord[-3:]
+
+        elif (
             currentWord[-3:] in {"яха", "еха", "еше"}
             and len(currentWord) >= 4
             and currentWord[-4] not in no_succeeding_yat
@@ -204,7 +213,7 @@ class Converter:
             if len(currentWord) == 4 or currentWord[-5:-1] not in noYatVerbs:
                 currentWord = currentWord[:-3] + "ѣ" + currentWord[-2:]
 
-        if (
+        elif (
             currentWord[-2:] in {"ех", "ях"}
             and len(currentWord) >= 3
             and currentWord[-3] not in no_succeeding_yat
@@ -243,7 +252,9 @@ class Converter:
         # search for any roots that have yat in them in the word
         for root, hasRoot in ((x, x in currentWord) for x in yatRoots):
             if hasRoot:
-
+                if root == "дете" and currentWord in verbs_te:
+                    # quick and dirty fix for a common problem
+                    continue
                 yatIndex = currentWord.index(root)
                 vowel = self.__getYatVowel(root)
                 currentWord = currentWord[:yatIndex] + currentWord[yatIndex:].replace(

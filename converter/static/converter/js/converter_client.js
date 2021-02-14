@@ -1,6 +1,8 @@
 let myInput = document.getElementById('input_text');
 let convertedContainer = document.getElementById("convertedContainer");
 let convertButton = document.getElementById('convert_button');
+let copyButton = document.getElementById('copy_button');
+let newConvertButton = document.getElementById('new_button');
 let loadingGif = document.getElementById('loading_gif');
 let easterEgg = document.getElementById('easter_egg');
 
@@ -47,13 +49,13 @@ function convert() {
 
     var val = myInput.value;
 
-    console.log(val);
     if (val.match(/нощь?та\s*на\s*26\s*-?\s*(?:ти)?\s*февруарий?\s*1945/i)) {
       easterEgg.hidden = false;
     }
 
     //disable the input while converting
-    myInput.disabled = true;
+    myInput.hidden = true;
+    convertButton.hidden = true;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -61,13 +63,13 @@ function convert() {
         //put the converted text in the second form
         convertedContainer.innerHTML = this.response['text'];
 
-        //enable input back on
-        myInput.disabled = false;
         converting_in_process = false; //done!
 
         //hide loading gif and show output box
         loadingGif.hidden = true;
         convertedContainer.hidden = false;
+        newConvertButton.hidden = false;
+        copyButton.hidden = false;
       } else if (this.status >= 400) {
         //something went wrong, so put a generic hardcoded error message
         convertedContainer.innerHTML = "Възникна грѣшка... прѣзаредѣте страницата";
@@ -99,7 +101,13 @@ function copyToClipboard() {
   document.execCommand("copy");
 }
 
-
+function resetConvert() {
+  convertedContainer.hidden = true;
+  myInput.hidden = false;
+  convertButton.hidden = false;
+  newConvertButton.hidden = true;
+  copyButton.hidden = true;
+}
 
 // an attempt at enabling dark mode functionality
 function toggleDarkMode() {

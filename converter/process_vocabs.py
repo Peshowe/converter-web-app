@@ -113,6 +113,8 @@ yatFullWords = {
     "дето",
     "утре",
     "таме",
+    "тем",
+    "тям",
 }
 yatDoubleRoots = {
     "бележ",
@@ -128,7 +130,7 @@ yatDoubleRoots = {
     "колене",
 }
 yatPrefixes = {"пре", "две", "ня", "нався"}
-nonYatPrefixRoots = {"презент"}
+nonYatPrefixRoots = {"презент", "президент", "премия", "премии"}
 yatSuffixes = {"еше", "еха"}
 feminineTheEndings = {"тта", "щта"}
 exclusionWords = {

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from .converter import Converter
 
-converter = Converter()
+converter = Converter(preload_cache=True)
 # max allowed input for the converter enpoint
 MAX_LEN_INPUT = 15000
 

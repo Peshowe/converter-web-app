@@ -1,7 +1,7 @@
 # nginx.default
 server {
     listen 80;
-    server_name 116.203.239.29;
+    server_name pravopis.osvedomitel.bg;
     server_tokens off;
 
     location /.well-known/acme-challenge/ {
@@ -15,10 +15,10 @@ server {
 
 server {
     listen 443 ssl;
-    server_name 116.203.239.29;
+    server_name pravopis.osvedomitel.bg;
     
-    ssl_certificate /etc/letsencrypt/live/116.203.239.29/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/116.203.239.29/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/pravopis.osvedomitel.bg/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pravopis.osvedomitel.bg/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 

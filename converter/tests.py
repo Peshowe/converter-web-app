@@ -34,3 +34,6 @@ class ConverterTestCase(TestCase):
 
     def test_words2(self):
         self._test("owords2.txt", "cwords2.txt")
+
+    def test_words3(self):
+        self._test("owords3.txt", "cwords3.txt")

@@ -33,6 +33,7 @@ from .process_vocabs import (
     yatFullWords,
     yatDoubleRoots,
     yatPrefixes,
+    nonYatPrefixRoots,
     feminineTheEndings,
     exclusionWords,
     usNotExcl,
@@ -212,11 +213,12 @@ class Converter:
                 # we have already added the "-ъ" at the end of words[i], so take that in consideration
                 currentWord = currentWord[:-2] + "ѣ" + currentWord[-1]
 
-        # check if the word starts with a prefix that should have yat
-        for root, hasRoot in ((x, currentWord.startswith(x)) for x in yatPrefixes):
-            if hasRoot:
-                vowel = self.__getYatVowel(root)
-                currentWord = currentWord.replace(vowel, "ѣ", 1)
+        # check if the word starts with a prefix that should have yat (but before that make sure that it's not part of the nonYatPrefixRoots set)
+        if not any(x in currentWord for x in nonYatPrefixRoots):
+            for root, hasRoot in ((x, currentWord.startswith(x)) for x in yatPrefixes):
+                if hasRoot:
+                    vowel = self.__getYatVowel(root)
+                    currentWord = currentWord.replace(vowel, "ѣ", 1)
 
         # check if the word has a root with two yat letters in it
         for root, hasRoot in ((x, x in currentWord) for x in yatDoubleRoots):
@@ -268,7 +270,7 @@ class Converter:
         """
         Change spelling of some words, that had a different spelling
         """
-        for root, hasRoot in ((x, x[0] in currentWord) for x in exclusionWords):
+        for root, hasRoot in ((x, x[0] in words[i]) for x in exclusionWords):
             if hasRoot:
                 words[i] = words[i].replace(root[0], root[1], 1)
                 return

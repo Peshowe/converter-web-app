@@ -6,6 +6,15 @@
   --osv-dark-grey: #283447;
   --osv-darkest-grey: #181818;
   --osv-light-blue: #dfe6ec;
+  --fg-color: var(--osv-darkest-grey);
+  --bg-color: var(--osv-white);
+  --border-color: var(--osv-light-blue);
+}
+
+[data-theme="dark"] {
+  --fg-color: var(--osv-light-blue);
+  --bg-color: var(--osv-darkest-grey);
+  --border-color: var(--osv-dark-grey);
 }
 
 * {
@@ -191,11 +200,11 @@ a:hover {
     height: 1.8em !important;
   }
 
-  #dark_mode_button {
+  #theme_button {
     display: none !important;
   }
 
-  #dark_mode_icon {
+  #theme_icon {
     display: initial !important;
   }
 }
@@ -247,30 +256,33 @@ a:hover {
   margin-left: 1em;
 }
 
-.dark-mode #input_text {
-  background-color: var(--osv-darkest-grey);
-  color: var(--osv-white);
+body {
+  color: var(--fg-color);
+  background-color: var(--bg-color)
 }
 
-.dark-mode #convertedContainer {
+#input_text {
+  background-color: var(--bg-color);
+  color: var(--fg-color)
+}
+
+#convertedContainer {
   background-color: var(--osv-darkest-grey);
   filter: brightness(130%);
   color: var(--osv-white);
 }
 
-.dark-mode {
-  color: var(--osv-light-blue);
-  background-color: var(--osv-darkest-grey);
-  border-color: var(--osv-dark-grey);
+.form-control {
+  border-color: var(--border-color);
 }
 
-#dark_mode_button {
+#theme_button {
   position: absolute;
   right: 0.4em;
   bottom: 0.4em;
 }
 
-#dark_mode_icon {
+#theme_icon {
   position: absolute;
   right: 0.3em;
   bottom: 0.25em;

@@ -5,6 +5,8 @@ let copyButton = document.getElementById('copy_button');
 let newConvertButton = document.getElementById('new_button');
 let loadingGif = document.getElementById('loading_gif');
 let easterEgg = document.getElementById('easter_egg');
+let themeButton1 = document.getElementById('theme_button');
+let themeButton2 = document.getElementById('theme_icon');
 
 let crsf_token;
 
@@ -109,11 +111,36 @@ function resetConvert() {
   copyButton.hidden = true;
 }
 
-// an attempt at enabling dark mode functionality
-function toggleDarkMode() {
-  var element = document.body;
-  element.classList.toggle("dark-mode");
-  myInput.classList.toggle("dark-mode");
-  convertedContainer.classList.toggle("dark-mode");
-  easterEgg.classList.toggle("dark-mode");
+function initTheme() {
+  let theme = localStorage.getItem('theme');
+  if (!theme) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    } else {
+      theme = 'light';
+    }
+  }
+  setTheme(theme);
 }
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    themeButton1.innerText = 'Свѣтълъ режимъ';
+    themeButton2.innerText = 'Свѣтло';
+  } else {
+    themeButton1.innerText = 'Тъменъ режимъ';
+    themeButton2.innerText = 'Тъмно';
+  }
+  localStorage.setItem('theme', theme);
+}
+
+function getTheme() {
+  return document.documentElement.getAttribute('data-theme');
+}
+
+function toggleTheme() {
+  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+}
+
+initTheme();

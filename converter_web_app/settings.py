@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "converter.cfapps.io", "116.203.239.29"]
+ALLOWED_HOSTS = ["127.0.0.1", "converter.cfapps.io", "116.203.239.29", "pravopis.osvedomitel.bg"]
 
 APPEND_SLASH = False
 # Application definition

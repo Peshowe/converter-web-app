@@ -127,11 +127,11 @@ a:hover {
 
 .parent_div_2{
   display: flex;
-  justify-content: space-between;
+  margin-left: -10px;
 }
 
-.side-box{
-  width: 50%;
+.parent_div_2 button {
+  margin-left: 10px;
 }
 
 .navigation {
@@ -160,9 +160,6 @@ a:hover {
     display: flex;
     align-items: flex-start;
     flex-direction: column-reverse;
-  }
-  .side-box {
-    width: 100%;
   }
   .convert-button{
     margin-top: 1em;

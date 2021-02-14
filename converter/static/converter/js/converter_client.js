@@ -2,6 +2,7 @@ let myInput = document.getElementById('input_text');
 let convertedContainer = document.getElementById("convertedContainer");
 let convertButton = document.getElementById('convert_button');
 let loadingGif = document.getElementById('loading_gif');
+let easterEgg = document.getElementById('easter_egg');
 
 let crsf_token;
 
@@ -46,8 +47,9 @@ function convert() {
 
     var val = myInput.value;
 
-    if (val == "Нощта на 26-ти февруари, 1945 г.") {
-      document.getElementById("easter_egg").hidden = false;
+    console.log(val);
+    if (val.match(/нощь?та\s*на\s*26\s*-?\s*(?:ти)?\s*февруарий?\s*1945/i)) {
+      easterEgg.hidden = false;
     }
 
     //disable the input while converting
@@ -105,4 +107,5 @@ function toggleDarkMode() {
   element.classList.toggle("dark-mode");
   myInput.classList.toggle("dark-mode");
   convertedContainer.classList.toggle("dark-mode");
+  easterEgg.classList.toggle("dark-mode");
 }

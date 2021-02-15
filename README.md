@@ -2,6 +2,8 @@
 
 A Django web app whose main functionality is converting text from the modern Bulgarian spelling into the historic Ivanchevski spelling.
 
+The web app is currently hosted here: https://pravopis.osvedomitel.bg/
+
 ## Spelling converter logic
 The main spelling conversion logic is in [converter/converter.py](converter/converter.py), with some helper logic in [converter/process_vocabs.py](converter/process_vocabs.py) and [converter/pos_tagger.py](converter/pos_tagger.py). 
 
@@ -16,6 +18,7 @@ If they're not provided, the app will still work, but not do POS tagging.
 ### Running locally
 
 To run locally, you'd need to create a secrets.py file in the [converter_web_app](converter_web_app) directory where a SECRET_KEY variable is defined with a random string that Django can use for a secret key. 
+
 Then just install dependencies and run the Django dev server
 
 ```

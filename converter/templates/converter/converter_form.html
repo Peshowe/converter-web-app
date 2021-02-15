@@ -2,7 +2,7 @@
     {% csrf_token %}
     <div class="converter-form">
         <textarea type="text" id="input_text" name="input_text" form="converter_form"
-                      placeholder="Вашият текст тук" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
+                      placeholder="Въведете текстъ тукъ" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
         {% load static %}
         <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
              hidden>

@@ -115,6 +115,9 @@ yatFullWords = {
     "таме",
     "тем",
     "тям",
+    "нема",
+    "немат",
+    "дека",
 }
 yatDoubleRoots = {
     "бележ",
@@ -145,14 +148,18 @@ exclusionWords = {
     ("сърц", "сърдц"),
     ("сърчи", "сърдчи"),
     ("отсѫств", "отсѫтств"),
+    ("карадайъ", "карадаѭ"),
+    ("йълдъз", "ѭлдъз"),
 }
 
 usNotExcl = {"откъсн"}
 
 noYatVerbs = {"клех", "взех", "клях", "взях"}
 
+wordsToSkip = {"ВиК", "МВнР"}
+
 
 # read in the most frequently used words in the Bulgarian language (scraped from a set of various literature books)
 freq_df = pd.read_csv(f"{STATIC_DIR}/word_lists/most_freq.txt", sep="\t", header=None)
 freq_df.rename(columns={0: "freq", 1: "word"}, inplace=True)
-freq_df = freq_df[~freq_df["word"].isin(verbsHomonymsTe)]
+freq_df = set(freq_df[~freq_df["word"].isin(verbsHomonymsTe)]["word"].values)

@@ -39,6 +39,8 @@ from .process_vocabs import (
     usNotExcl,
     freq_df,
     verbs_te,
+    vowels,
+    wordsToSkip,
 )
 
 
@@ -53,7 +55,7 @@ class Converter:
         """
         self.frequent_words_cache = {}
         if preload_cache:
-            for word in freq_df["word"].unique():
+            for word in freq_df:
                 self.frequent_words_cache[word] = self.convertText(word)
 
         # delete this df, since we no longer need it (the idea here is memory optimisation)
@@ -116,7 +118,9 @@ class Converter:
         Place yer vowels at the end of words ending in consonants
         """
         if currentWord[-1] in cons:
+
             if currentWord in abbreviations:
+                # check some other common abbreviations that should not have an ending yer
                 return
 
             if currentWord in expandedVS:
@@ -286,6 +290,36 @@ class Converter:
                 words[i] = words[i].replace(root[0], root[1], 1)
                 return
 
+    def _wordVerified(self, w, currentWord):
+        """Check if the word should go inside the converter at all.
+        Some words (like abbreviations) don't have anything for converting, so we can skip them.
+
+        Args:
+            w (str): The original word
+            currentWord (str): The word in lower case
+
+        Returns:
+            bool: Should we perform the spelling convertion checks or not
+        """
+
+        if w in wordsToSkip:
+            # if the word is part of this exception list, skip it
+            return False
+
+        if (
+            w.isupper()
+            and not any([c in vowels for c in currentWord])
+            and len(currentWord) > 1
+        ):
+            # if the current word is all caps and doesn't have a vowel, it is probably an abbreviation, so skip (i.e. don't "verify")
+            return False
+
+        if len(currentWord) == 1 and currentWord not in {"с", "в"}:
+            return False
+
+        # word is "verified"
+        return True
+
     def convertText(self, text):
         """Convert the words in the text
 
@@ -311,17 +345,20 @@ class Converter:
             for i, w in enumerate(s):
 
                 if words[i] in self.frequent_words_cache:
-                    # if words is in precomputed cache, use that
+                    # if the word is in the precomputed cache, use that
                     words[i] = self.frequent_words_cache[words[i]]
 
                 else:
                     # instead do the spelling conversion checks
                     currentWord = words[i]
-                    self._checkEnding(i, words, currentWord)
-                    self._checkUs(i, words, currentWord)
-                    self._checkYat(i, words, currentWord, s)
-                    self._checkFeminineThe(i, words, currentWord)
-                    self._checkExclusionWords(i, words, currentWord)
+
+                    # if the current word is "verified", perform all the conversion checks on it
+                    if self._wordVerified(w, currentWord):
+                        self._checkEnding(i, words, currentWord)
+                        self._checkUs(i, words, currentWord)
+                        self._checkYat(i, words, currentWord, s)
+                        self._checkFeminineThe(i, words, currentWord)
+                        self._checkExclusionWords(i, words, currentWord)
 
                 tmp_index = text_idx + text[text_idx:].index(w)
 

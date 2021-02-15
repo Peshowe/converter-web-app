@@ -8,12 +8,14 @@
   --osv-light-blue: #dfe6ec;
   --fg-color: var(--osv-darkest-grey);
   --bg-color: var(--osv-white);
+  --bg-disabled-color: #EEEEFE;
   --border-color: var(--osv-light-blue);
 }
 
 [data-theme="dark"] {
   --fg-color: var(--osv-light-blue);
   --bg-color: var(--osv-darkest-grey);
+  --bg-disabled-color: var(--osv-dark-grey);
   --border-color: var(--osv-dark-grey);
 }
 
@@ -267,9 +269,8 @@ body {
 }
 
 #convertedContainer {
-  background-color: var(--osv-darkest-grey);
-  filter: brightness(130%);
-  color: var(--osv-white);
+  background-color: var(--bg-disabled-color);
+  color: var(--fg-color);
 }
 
 .form-control {

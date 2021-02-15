@@ -296,6 +296,6 @@ body {
   height: auto;
 }
 
-#easter_egg.dark-mode {
-  filter: invert();
+[data-theme="dark"] #easter_egg {
+  filter: invert(90.5%);
 }

@@ -94,7 +94,7 @@ no_succeeding_yat = vowels.union(
     {"ч", "ш", "ж", "г", "к", "х"}
 )  # letters after which we can't have a yat vowel
 expandedVS = {"във", "със"}
-usHomographs = {"кът", "път", "прът"}
+usHomographs = {"кът", "път", "прът", "имамбаялдъ"}
 usSecondVowel = {"гълъб", "жълъд"}
 yatFullExclusions = {"сте", "вещ", "лев", "лева", "свет", "нея", "бей", "бея", "беят"}
 yatFullWords = {

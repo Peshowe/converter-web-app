@@ -183,8 +183,8 @@ class Converter:
         if currentWord[-2:] == "те" and currentWord not in yatNotTe:
             addYat = True
             if currentWord in verbsHomonymsTe:
-                # POS inference
-                tagged_words = tag_pos(origSentence)
+                # POS inference (pass it as a string, so that we can memoise it)
+                tagged_words = tag_pos(" ".join(origSentence))
                 # if the tagger is not initialised, it will return None
                 if tagged_words is not None:
                     # don't add yat to the end of the word if it's a verb

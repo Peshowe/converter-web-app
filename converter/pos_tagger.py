@@ -39,6 +39,8 @@ else:
     import tensorflow_hub as hub
     from bert.tokenization import FullTokenizer
 
+    from functools import lru_cache
+
     # from tqdm import tqdm_notebook
 
     class PaddingInputExample(object):
@@ -279,8 +281,19 @@ else:
         new = [val for sublist in new for val in sublist]
         return new
 
-    def tag_pos(sentence_tokenized):
-        # import pdb; pdb.set_trace()
+    @lru_cache(maxsize=42)
+    def tag_pos(sentence_string):
+        """Do POS tagging for each word in the provided sentence
+        (This function is cached because it's very CPU intensive and it might be often that we want to call it for words in the same sentence)
+
+        Args:
+            sentence_string (str): Sentence on the words of which we want to do POS tagging
+
+        Returns:
+            list: List of words and their respective POS tags
+        """
+
+        sentence_tokenized = sentence_string.split(" ")
 
         # split into multiple sentences of max length, if words in input exeed max lenght
         if len(sentence_tokenized) > MAX_SEQUENCE_LENGTH:

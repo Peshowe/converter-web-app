@@ -63,7 +63,7 @@ function convert() {
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         //put the converted text in the second form
-        convertedContainer.innerHTML = this.response['text'];
+        convertedContainer.innerHTML = highlightText(val, this.response['text']);
 
         converting_in_process = false; //done!
 
@@ -94,17 +94,35 @@ function convert() {
 
 //copy the converted text to the user's clipboard
 function copyToClipboard() {
+  function animateYatYus() {
+    $('#yatyus').show();
+    $('#yatyus span').css({
+      fontSize: "5%",
+      opacity: 0.5
+    })
+        .animate({
+          fontSize: "100%"
+        }, 300, function () {
+          $(this).animate({opacity: 0}, function () {
+            $('#yatyus').hide();
+          });
+        });
+  }
 
-  /* Select the text field */
-  convertedContainer.select();
-  convertedContainer.setSelectionRange(0, 99999); /* For mobile devices */
-
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
+  animateYatYus();
+  
+  /* Select, copy and unselect the div */
+  convertedContainer.contentEditable = 'true';
+  convertedContainer.focus();
+  document.execCommand('SelectAll');
+  document.execCommand("Copy", false, null);
+  document.execCommand('Unselect');
+  convertedContainer.contentEditable = 'false';
 }
 
 function resetConvert() {
   convertedContainer.hidden = true;
+  convertedContainer.scrollTop = 0;
   myInput.hidden = false;
   convertButton.hidden = false;
   newConvertButton.hidden = true;
@@ -141,6 +159,51 @@ function getTheme() {
 
 function toggleTheme() {
   setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+}
+
+function highlightText(a, b) {
+  function highlightWord(a, b) {
+    if (b.length < a.length) {
+      return highlightSingle(b);
+    }
+
+    let diff = patienceDiffPlus(a.split(""), b.split(""));
+
+    return diff.lines
+        .filter(x => x.bIndex >= 0)
+        .map(x => {
+          let c = x.line;
+          if (x.aIndex < 0) {
+            c = highlightSingle(c);
+          }
+          return c;
+        })
+        .join('');
+  }
+
+  function highlightSingle(x) {
+    return '<span class="hi">' + x + '</span>';
+  }
+
+  if (!b) {
+    return '';
+  }
+  let wordsA = a.match(/([\u0400-\u04FF]+|[^\u0400-\u04FF]+)/g);
+  let wordsB = b.match(/([\u0400-\u04FF]+|[^\u0400-\u04FF]+)/g);
+  if (wordsA.length !== wordsB.length) {
+    return b;
+  }
+
+  let words = [];
+  for (let i = 0; i < wordsA.length; i++) {
+    if (wordsB[i].match(/^[\u0400-\u04FF]/)) {
+      words.push(highlightWord(wordsA[i], wordsB[i]));
+    } else {
+      words.push(wordsB[i].replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'));
+    }
+  }
+
+  return words.join('');
 }
 
 initTheme();

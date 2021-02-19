@@ -10,6 +10,7 @@
   --bg-color: var(--osv-white);
   --bg-disabled-color: #EEEEFE;
   --border-color: var(--osv-light-blue);
+  --highlight-color: var(--osv-purple);
 }
 
 [data-theme="dark"] {
@@ -17,6 +18,7 @@
   --bg-color: var(--osv-darkest-grey);
   --bg-disabled-color: var(--osv-dark-grey);
   --border-color: var(--osv-dark-grey);
+  --highlight-color: #ab8ccc;
 }
 
 * {
@@ -130,6 +132,7 @@ a:hover {
   margin-top: 0.5em;
   margin-left:1em;
   margin-right:1em;
+  position: relative;
 }
 
 .parent_div_1{
@@ -181,6 +184,10 @@ a:hover {
     height: 10em;
     /* width: 18em; */
   }
+
+  #yatyus {
+    font-size: 200px !important;
+  }
 }
 
 @media (max-width: 640px) {
@@ -208,6 +215,10 @@ a:hover {
 
   #theme_icon {
     display: initial !important;
+  }
+
+  #yatyus {
+    font-size: 150px !important;
   }
 }
 
@@ -263,18 +274,39 @@ body {
   background-color: var(--bg-color)
 }
 
+textarea.text, div.text {
+  height: 420px;
+}
+
 #input_text {
   background-color: var(--bg-color);
-  color: var(--fg-color)
+  color: var(--fg-color);
 }
 
 #convertedContainer {
   background-color: var(--bg-disabled-color);
   color: var(--fg-color);
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+#convertedContainer span.hi {
+  color: var(--highlight-color);
+}
+
+#yatyus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .form-control {
-  border-color: var(--border-color);
+  border: 1px solid var(--border-color);
 }
 
 #theme_button {

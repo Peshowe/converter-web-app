@@ -55,6 +55,11 @@ abbreviations = set(
     ].values
 )
 
+nonYatPrefixRoots = set(
+    pd.read_csv(
+        f"{STATIC_DIR}/word_lists/nonYatPrefixRoots.txt", sep="\n", header=None
+    )[0].values
+)
 
 # these ending in "-те" could be verbs or non-verbs
 verbsHomonymsTe = set(
@@ -132,8 +137,7 @@ yatDoubleRoots = {
     "донейде",
     "колене",
 }
-yatPrefixes = {"пре", "две", "ня", "нався"}
-nonYatPrefixRoots = {"презент", "президент", "премия", "премии"}
+yatPrefixes = {"пре", "две", "ня", "нався", "вер"}
 yatSuffixes = {"еше", "еха"}
 feminineTheEndings = {"тта", "щта"}
 exclusionWords = {

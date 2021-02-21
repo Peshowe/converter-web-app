@@ -257,7 +257,12 @@ class Converter:
         for root, hasRoot in ((x, x in currentWord) for x in yatRoots):
             if hasRoot:
                 if root == "дете" and currentWord in verbs_te:
-                    # quick and dirty fix for a common problem
+                    # quick and dirty fix for a common problem (verbs ending in "дете")
+                    continue
+
+                if root == "лев" and "делев" in currentWord:
+                    # another quick and dirty fix
+                    # TODO: pick the yat root the appears first in the word
                     continue
                 yatIndex = currentWord.index(root)
                 vowel = self.__getYatVowel(root)

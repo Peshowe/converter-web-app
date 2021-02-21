@@ -2,13 +2,17 @@
     {% csrf_token %}
     <div class="converter-form">
         <textarea type="text" id="input_text" name="input_text" form="converter_form"
-                      placeholder="Въведете текстъ тукъ" class="form-control" rows="15" maxlength="{{max_input}}"></textarea>
+                      placeholder="Въведете текстъ тукъ" class="text form-control" maxlength="{{max_input}}"></textarea>
+
         {% load static %}
         <img class="loading_gif" id="loading_gif" src="{% static 'converter/loading_gif.gif' %}" alt="Зареждане"
              hidden>
 
-        <textarea id='convertedContainer' type="text" class="form-control" rows="15" readonly hidden></textarea>
+        <div id="convertedContainer" class="text form-control" hidden></div>
 
+        <div id="yatyus" class="text hidden" style="display: none;">
+            <span>Ѣ Ѫ</span>
+        </div>
 
         <div class="input-group parent_div_2">
             <button id="convert_button" type="button" class="btn btn-primary convert-button"
@@ -24,6 +28,7 @@
 <img id="easter_egg" src="{% static 'converter/easter_egg.png' %}" alt="Нощьта на 26-ти февруари" hidden>
 
 
+<script src="{% static 'converter/js/patience_diff.js' %}"></script>
 <script src="{% static 'converter/js/converter_client.js' %}"></script>
 <script type="text/javascript">
     set_crsf("{{csrf_token}}")
